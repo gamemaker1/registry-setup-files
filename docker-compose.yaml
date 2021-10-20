@@ -29,7 +29,6 @@ services:
     image: dockerhub/sunbird-rc-core
     volumes:
       - ./schemas:/home/opensaber/config/public/_schemas
-
     environment:
       - connectionInfo_uri=jdbc:postgresql://db:5432/registry
       - connectionInfo_username=postgres
@@ -41,7 +40,7 @@ services:
       - sunbird_sso_admin_client_id=admin-api
       - sunbird_sso_client_id=registry-frontend
       - sunbird_sso_admin_client_secret=INSERT_SECRET_HERE
-      - claims_url=http://claim-ms:8082
+      - claims_url=http://cs:8082
       - internal_entities=Student,Teacher
     ports:
       - '8081:8081'
@@ -75,4 +74,19 @@ services:
       - '9990:9990'
     depends_on:
       db:
+        condition: service_started
+  cs:
+    container_name: cs
+    image: dockerhub/open-saber-claim-ms
+    environment:
+      - connectionInfo_uri=jdbc:postgresql://db:5432/registry
+      - connectionInfo_username=postgres
+      - connectionInfo_password=postgres
+      - opensaber_url=http://rg:8081
+    ports:
+      - '8082:8082'
+    depends_on:
+      db:
+        condition: service_started
+      rg:
         condition: service_started

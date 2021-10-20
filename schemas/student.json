@@ -28,13 +28,16 @@
 				"userId": "/phoneNumber"
 			}
 		],
+		"attestationAttributes": ["school"],
 		"attestationPolicies": [
 			{
 				"property": "school",
-				"paths": ["school"],
+				"paths": ["$.school"],
+				"type": "MANUAL",
 				"attestorEntity": "Teacher",
 				"conditions": "(ATTESTOR#$.school#.contains(REQUESTER#$.school#))"
 			}
-		]
+		],
+		"subjectJsonPath": "mobile"
 	}
 }
